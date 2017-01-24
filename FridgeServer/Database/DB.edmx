@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DB.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DBStoreContainer">
+    <EntitySet Name="Locations" EntityType="DB.Store.Locations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Markets" EntityType="DB.Store.Markets" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Products" EntityType="DB.Store.Products" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Receipts" EntityType="DB.Store.Receipts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fridges" EntityType="DB.Store.Fridges" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ReceiptProduct" EntityType="DB.Store.ReceiptProduct" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FridgeProduct" EntityType="DB.Store.FridgeProduct" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MarketProduct" EntityType="DB.Store.MarketProduct" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_ReceiptProduct_Receipt" Association="DB.Store.FK_ReceiptProduct_Receipt">
+      <End Role="Receipt" EntitySet="Receipts" />
+      <End Role="ReceiptProduct" EntitySet="ReceiptProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReceiptProduct_Product" Association="DB.Store.FK_ReceiptProduct_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="ReceiptProduct" EntitySet="ReceiptProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FridgeProduct_Fridge" Association="DB.Store.FK_FridgeProduct_Fridge">
+      <End Role="Fridge" EntitySet="Fridges" />
+      <End Role="FridgeProduct" EntitySet="FridgeProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FridgeProduct_Product" Association="DB.Store.FK_FridgeProduct_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="FridgeProduct" EntitySet="FridgeProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FridgeLocation" Association="DB.Store.FridgeLocation">
+      <End Role="Fridge" EntitySet="Fridges" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <AssociationSet Name="MarketLocation" Association="DB.Store.MarketLocation">
+      <End Role="Market" EntitySet="Markets" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MarketProduct_Market" Association="DB.Store.FK_MarketProduct_Market">
+      <End Role="Market" EntitySet="Markets" />
+      <End Role="MarketProduct" EntitySet="MarketProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MarketProduct_Product" Association="DB.Store.FK_MarketProduct_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="MarketProduct" EntitySet="MarketProduct" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Locations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Longitude" Type="float" Nullable="false" />
+    <Property Name="Latitude" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Markets">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Location_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Quantity" Type="float" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Receipts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Fridges">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Location_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ReceiptProduct">
+    <Key>
+      <PropertyRef Name="Receipts_Id" />
+      <PropertyRef Name="Products_Id" />
+    </Key>
+    <Property Name="Receipts_Id" Type="int" Nullable="false" />
+    <Property Name="Products_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FridgeProduct">
+    <Key>
+      <PropertyRef Name="Fridges_Id" />
+      <PropertyRef Name="Products_Id" />
+    </Key>
+    <Property Name="Fridges_Id" Type="int" Nullable="false" />
+    <Property Name="Products_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MarketProduct">
+    <Key>
+      <PropertyRef Name="Markets_Id" />
+      <PropertyRef Name="Products_Id" />
+    </Key>
+    <Property Name="Markets_Id" Type="int" Nullable="false" />
+    <Property Name="Products_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FridgeLocation">
+    <End Role="Fridge" Type="DB.Store.Fridges" Multiplicity="*" />
+    <End Role="Location" Type="DB.Store.Locations" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fridge">
+        <PropertyRef Name="Location_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MarketLocation">
+    <End Role="Market" Type="DB.Store.Markets" Multiplicity="*" />
+    <End Role="Location" Type="DB.Store.Locations" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Market">
+        <PropertyRef Name="Location_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReceiptProduct_Receipt">
+    <End Role="Receipt" Type="DB.Store.Receipts" Multiplicity="1" />
+    <End Role="ReceiptProduct" Type="DB.Store.ReceiptProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receipt">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReceiptProduct">
+        <PropertyRef Name="Receipts_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReceiptProduct_Product">
+    <End Role="ReceiptProduct" Type="DB.Store.ReceiptProduct" Multiplicity="*" />
+    <End Role="Product" Type="DB.Store.Products" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReceiptProduct">
+        <PropertyRef Name="Products_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FridgeProduct_Fridge">
+    <End Role="Fridge" Type="DB.Store.Fridges" Multiplicity="1" />
+    <End Role="FridgeProduct" Type="DB.Store.FridgeProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fridge">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FridgeProduct">
+        <PropertyRef Name="Fridges_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FridgeProduct_Product">
+    <End Role="FridgeProduct" Type="DB.Store.FridgeProduct" Multiplicity="*" />
+    <End Role="Product" Type="DB.Store.Products" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FridgeProduct">
+        <PropertyRef Name="Products_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MarketProduct_Market">
+    <End Role="Market" Type="DB.Store.Markets" Multiplicity="1" />
+    <End Role="MarketProduct" Type="DB.Store.MarketProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Market">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MarketProduct">
+        <PropertyRef Name="Markets_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MarketProduct_Product">
+    <End Role="MarketProduct" Type="DB.Store.MarketProduct" Multiplicity="*" />
+    <End Role="Product" Type="DB.Store.Products" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MarketProduct">
+        <PropertyRef Name="Products_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="DB" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="DBContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Locations" EntityType="DB.Location" />
+          <EntitySet Name="Markets" EntityType="DB.Market" />
+          <EntitySet Name="Products" EntityType="DB.Product" />
+          <EntitySet Name="Receipts" EntityType="DB.Receipt" />
+          <AssociationSet Name="ReceiptProduct" Association="DB.ReceiptProduct">
+            <End Role="Receipt" EntitySet="Receipts" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <EntitySet Name="Fridges" EntityType="DB.Fridge" />
+          <AssociationSet Name="FridgeProduct" Association="DB.FridgeProduct">
+            <End Role="Fridge" EntitySet="Fridges" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FridgeLocation" Association="DB.FridgeLocation">
+            <End Role="Fridge" EntitySet="Fridges" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="MarketLocation" Association="DB.MarketLocation">
+            <End Role="Market" EntitySet="Markets" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="MarketProduct" Association="DB.MarketProduct">
+            <End Role="Market" EntitySet="Markets" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Longitude" Type="Double" Nullable="false" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Fridge" Relationship="DB.FridgeLocation" FromRole="Location" ToRole="Fridge" />
+          <NavigationProperty Name="Market" Relationship="DB.MarketLocation" FromRole="Location" ToRole="Market" />
+        </EntityType>
+        <EntityType Name="Market">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Location" Relationship="DB.MarketLocation" FromRole="Market" ToRole="Location" />
+          <NavigationProperty Name="Products" Relationship="DB.MarketProduct" FromRole="Market" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <NavigationProperty Name="Receipts" Relationship="DB.ReceiptProduct" FromRole="Product" ToRole="Receipt" />
+          <NavigationProperty Name="Fridges" Relationship="DB.FridgeProduct" FromRole="Product" ToRole="Fridge" />
+          <NavigationProperty Name="Markets" Relationship="DB.MarketProduct" FromRole="Product" ToRole="Market" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="DB.ReceiptProduct" FromRole="Receipt" ToRole="Product" />
+        </EntityType>
+        <Association Name="ReceiptProduct">
+          <End Type="DB.Receipt" Role="Receipt" Multiplicity="*" />
+          <End Type="DB.Product" Role="Product" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Fridge">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="DB.FridgeProduct" FromRole="Fridge" ToRole="Product" />
+          <NavigationProperty Name="Location" Relationship="DB.FridgeLocation" FromRole="Fridge" ToRole="Location" />
+        </EntityType>
+        <Association Name="FridgeProduct">
+          <End Type="DB.Fridge" Role="Fridge" Multiplicity="*" />
+          <End Type="DB.Product" Role="Product" Multiplicity="*" />
+        </Association>
+        <Association Name="FridgeLocation">
+          <End Type="DB.Fridge" Role="Fridge" Multiplicity="0..1" />
+          <End Type="DB.Location" Role="Location" Multiplicity="1" />
+        </Association>
+        <Association Name="MarketLocation">
+          <End Type="DB.Market" Role="Market" Multiplicity="0..1" />
+          <End Type="DB.Location" Role="Location" Multiplicity="1" />
+        </Association>
+        <Association Name="MarketProduct">
+          <End Type="DB.Market" Role="Market" Multiplicity="*" />
+          <End Type="DB.Product" Role="Product" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DBStoreContainer" CdmEntityContainer="DBContainer">
+    <EntitySetMapping Name="Locations">
+      <EntityTypeMapping TypeName="IsTypeOf(DB.Location)">
+        <MappingFragment StoreEntitySet="Locations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Markets">
+      <EntityTypeMapping TypeName="IsTypeOf(DB.Market)">
+        <MappingFragment StoreEntitySet="Markets">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="IsTypeOf(DB.Product)">
+        <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Receipts">
+      <EntityTypeMapping TypeName="IsTypeOf(DB.Receipt)">
+        <MappingFragment StoreEntitySet="Receipts">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Fridges">
+      <EntityTypeMapping TypeName="IsTypeOf(DB.Fridge)">
+        <MappingFragment StoreEntitySet="Fridges">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ReceiptProduct" TypeName="DB.ReceiptProduct" StoreEntitySet="ReceiptProduct">
+      <EndProperty Name="Receipt">
+        <ScalarProperty Name="Id" ColumnName="Receipts_Id" />
+      </EndProperty>
+      <EndProperty Name="Product">
+        <ScalarProperty Name="Id" ColumnName="Products_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FridgeProduct" TypeName="DB.FridgeProduct" StoreEntitySet="FridgeProduct">
+      <EndProperty Name="Fridge">
+        <ScalarProperty Name="Id" ColumnName="Fridges_Id" />
+      </EndProperty>
+      <EndProperty Name="Product">
+        <ScalarProperty Name="Id" ColumnName="Products_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FridgeLocation" TypeName="DB.FridgeLocation" StoreEntitySet="Fridges">
+      <EndProperty Name="Location">
+        <ScalarProperty Name="Id" ColumnName="Location_Id" />
+      </EndProperty>
+      <EndProperty Name="Fridge">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MarketLocation" TypeName="DB.MarketLocation" StoreEntitySet="Markets">
+      <EndProperty Name="Location">
+        <ScalarProperty Name="Id" ColumnName="Location_Id" />
+      </EndProperty>
+      <EndProperty Name="Market">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MarketProduct" TypeName="DB.MarketProduct" StoreEntitySet="MarketProduct">
+      <EndProperty Name="Market">
+        <ScalarProperty Name="Id" ColumnName="Markets_Id" />
+      </EndProperty>
+      <EndProperty Name="Product">
+        <ScalarProperty Name="Id" ColumnName="Products_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
