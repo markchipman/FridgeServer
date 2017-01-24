@@ -30,12 +30,15 @@ namespace FridgeServer.Database {
         }
 
         public static void FillMarketsAndLocations(DBContainer dbc) {
+            Product p = new Product("MarketProdukt", 1.0, "Za Market");
+            dbc.Products.Add(p);
             Market m = new Market();
             Location l = new Location();
             l.Latitude = 41.9713929;
             l.Longitude = 21.4183397;
             l.Market = m;
             m.Name = "СП";
+            m.Products.Add(p);
             dbc.Locations.Add(l);
             dbc.Markets.Add(m);
 
@@ -46,6 +49,7 @@ namespace FridgeServer.Database {
             l.Latitude = 42.0026635;
             l.Longitude = 21.3740188;
             l.Market = m;
+            m.Products.Add(p);
             m.Name = "Тинекс";
             dbc.Locations.Add(l);
             dbc.Markets.Add(m);

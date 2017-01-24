@@ -29,7 +29,6 @@ namespace FridgeServer.Database
             this.Description = Description;
         }
     
-        [JsonIgnore]
         public int Id { get; set; }
         public string Name { get; set; }
         public double Quantity { get; set; }
